@@ -8,6 +8,7 @@ from collections import defaultdict
 import json
 import os
 
+
 SUSPECT_THRESHOLD = 5
 FAILED_STATUSES = {"failed", "fail", "failure"}
 SUCCESS_STATUSES = {"success", "sucess", "ok"}
@@ -109,7 +110,7 @@ def _generate_summary(prompt: str) -> str:
     from google import genai
 
     client = genai.Client(api_key=_api_key())
-    model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+    model = os.getenv("GEMINI_MODEL", "gemini-3.6-flash")
     response = client.models.generate_content(model=model, contents=prompt)
     return (response.text or "").strip()
 
