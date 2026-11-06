@@ -1,4 +1,7 @@
 import ipaddress
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from fastapi import FastAPI, Query
 from pydantic import BaseModel, field_validator

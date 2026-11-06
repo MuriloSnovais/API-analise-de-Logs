@@ -109,7 +109,7 @@ def _generate_summary(prompt: str) -> str:
     from google import genai
 
     client = genai.Client(api_key=_api_key())
-    model = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
+    model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
     response = client.models.generate_content(model=model, contents=prompt)
     return (response.text or "").strip()
 
