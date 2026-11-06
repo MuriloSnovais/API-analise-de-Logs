@@ -72,7 +72,7 @@ pip install -r requirements.txt
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 # 🎯 Como Usar a API (Exemplo Prático)
-Com a API rodando, você pode enviar um log de eventos de segurança no formato JSON para a rota /analise. A regra de negócio atual considera suspeito qualquer IP que apresente 5 ou mais falhas de login.
+Com a API rodando, você pode enviar um log de eventos de segurança no formato JSON para a rota `/analise` (o alias `/analyse` também funciona). A regra de negócio considera suspeito qualquer IP que apresente 5 ou mais falhas de login. A contagem é determinística. A IA não decide quem é suspeito: com `?with_ai=true` ela só escreve um resumo dos IPs que a regra já marcou. Sem a variável `GEMINI_API_KEY`, a análise continua e o campo `ai.enabled` volta `false`.
 
 Você pode usar o Swagger UI acessando http://localhost:8000/docs no seu navegador, ou usar o terminal com o comando curl:
 
@@ -97,9 +97,20 @@ curl -X 'POST' \
 [
   {
     "Suspect IP": "192.168.1.15",
-    "Try": 5
+    "Try": 5,
+    "successful_attempts": 0,
+    "failure_rate": 1.0,
+    "risk": "high"
   }
 ]
+```
+
+O mesmo corpo, com `?with_ai=true`, devolve a lista em `suspects` e um resumo em `ai`. O modelo só recebe os IPs já marcados, não o log inteiro.
+
+A chave fica só no ambiente, nunca no código:
+
+```bash
+export GEMINI_API_KEY="sua-chave"
 ```
 # 🛤️ Jornada de Desenvolvimento (Roadmap)
 Este projeto foi construído em etapas incrementais, focando na solidez técnica e na integração de ferramentas do ecossistema de segurança e infraestrutura:
